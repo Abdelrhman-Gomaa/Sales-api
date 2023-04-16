@@ -7,25 +7,31 @@ export const databaseProviders = [
     useFactory: async () => {
       const sequelize = new Sequelize({
         dialect: 'mysql',
-        host: process.env.DATABASE_HOST ,//|| 'localhost',
-        port: +process.env.DATABASE_PORT ,//|| 3306,
-        username: process.env.DATABASE_USER ,//|| 'root',
-        password: process.env.DATABASE_PASSWORD ,//|| 'Pass@1234',
-        database: process.env.DATABASE_NAME ,//|| 'sales-api',
+        host: process.env.DATABASE_HOST ,
+        port: +process.env.DATABASE_PORT ,
+        username: process.env.DATABASE_USER ,
+        password: process.env.DATABASE_PASSWORD ,
+        database: process.env.DATABASE_NAME ,
         define: {
           timestamps: false
         },
       });
       sequelize.addModels([User]); //, Basket, Course, Subject
 
-      sequelize
-        .authenticate()
-        .then(() => {
-          console.log('Connection has been established successfully.');
-        })
-        .catch(err => {
-          console.error('Unable to connect to the database:', err);
-        });
+      sequelize.authenticate()
+        // .then(() => {
+        //   console.log('Connection has been established successfully.');
+        // })
+        // .catch(err => {
+        //   console.error('Unable to connect to the database:', err);
+        // });
+
+        sequelize.sync({alter: true})
+        // .then(() =>{
+        //   console.log(`Models and relation synchronization In DB Successfully------------------------------`)
+        // }).catch((err) => {
+        //   console.log(`Can't synchronization Models and relation In BD ------------------------------ ${err.message}`)
+        // });
 
 
       return sequelize;
