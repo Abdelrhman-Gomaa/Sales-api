@@ -6,7 +6,7 @@ import { JwtConstants } from '../../constants';
 import { JwtStrategy } from './jwt.strategy';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { UserProviders } from './users.providers';
+import { UsersProvider } from './users.provider';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { UserProviders } from './users.providers';
   controllers: [UserController],
   providers: [
     UserService,
-    ...UserProviders,
+    ...UsersProvider,
     JwtStrategy
   ],
   exports: [

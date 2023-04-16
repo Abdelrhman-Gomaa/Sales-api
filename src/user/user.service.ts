@@ -6,11 +6,12 @@ import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
 import { User } from './model/user.model';
 import { JwtPayload } from './jwt.payload.interface';
+import { USERS_REPOSITORY } from 'src/database/database.model.patterns';
 
 @Injectable()
 export class UserService {
     constructor(
-        @Inject('USER_REPOSITORY')
+        @Inject(USERS_REPOSITORY)
         private readonly userRepo: typeof User,
         private readonly jwtService: JwtService
     ) { }
