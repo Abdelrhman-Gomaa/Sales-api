@@ -11,16 +11,16 @@ import { JwtPayload } from './jwt.payload.interface';
 export class UserService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private readonly userRepository: typeof User,
+        private readonly userRepo: typeof User,
         private readonly jwtService: JwtService
     ) { }
 
     async findAll() {
-        return await this.userRepository.findAll({ include: { all: true } });
+        return await this.userRepo.findAll({ include: { all: true } });
     }
 
     async register(input: CreateUserInput) {
-        const existUser = await this.userRepository.findOne({
+        const existUser = await this.userRepo.findOne({
             where: {
                 [Op.or]: [{ username: input.username }, { email: input.email }]
             }
@@ -32,7 +32,7 @@ export class UserService {
         const hashPassword = await bcrypt.hash(password, salt);
 
         try {
-            return await this.userRepository.create({
+            return await this.userRepo.create({
                 username: input.username,
                 email: input.email,
                 salt: salt,
@@ -70,7 +70,7 @@ export class UserService {
         try{
             user.password = hashPassword
             //return newPass
-            return await this.userRepository.update({password: user.password},{where : {password : user.password}})
+            return await this.userRepo.update({password: user.password},{where : {password : user.password}})
         }catch(error){
             return error.message
             //  throw new UnauthorizedException('Invalid Password')
@@ -81,7 +81,7 @@ export class UserService {
     }*/
 
     async validationUserPassword(input: LoginUserInput) {
-        const user = await this.userRepository.findOne({ where: { email: input.email } });
+        const user = await this.userRepo.findOne({ where: { email: input.email } });
         if (user) {
             if (await user.validatePassword(input.password)) {
                 const userValidate = {

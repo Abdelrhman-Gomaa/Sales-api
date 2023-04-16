@@ -19,19 +19,19 @@ export const databaseProviders = [
       sequelize.addModels([User]); //, Basket, Course, Subject
 
       sequelize.authenticate()
-        // .then(() => {
-        //   console.log('Connection has been established successfully.');
-        // })
-        // .catch(err => {
-        //   console.error('Unable to connect to the database:', err);
-        // });
+        .then(() => {
+          console.log('Connection has been established successfully.');
+        })
+        .catch(err => {
+          console.error('Unable to connect to the database:', err);
+        });
 
-        sequelize.sync({alter: true})
-        // .then(() =>{
-        //   console.log(`Models and relation synchronization In DB Successfully------------------------------`)
-        // }).catch((err) => {
-        //   console.log(`Can't synchronization Models and relation In BD ------------------------------ ${err.message}`)
-        // });
+        sequelize.sync({alter: true, force: true})
+        .then(() =>{
+          console.log(`Models and relation synchronization In DB Successfully ✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔`)
+        }).catch((err) => {
+          console.log(`Can't synchronization Models and relation In BD ❌❌❌❌❌❌❌❌❌❌❌❌❌ ${err.message}`)
+        });
 
 
       return sequelize;
