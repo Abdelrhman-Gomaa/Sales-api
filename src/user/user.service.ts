@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
 import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
-import { User } from './model/user.model';
+import { User } from './models/user.model';
 import { JwtPayload } from './jwt.payload.interface';
 import { USERS_REPOSITORY } from 'src/database/database.model.patterns';
 

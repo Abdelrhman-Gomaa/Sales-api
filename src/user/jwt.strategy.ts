@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { User } from "./model/user.model";
+import { User } from "./models/user.model";
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { JwtPayload } from "./jwt.payload.interface";
 import { ForbiddenException, UnauthorizedException } from "@nestjs/common/exceptions";

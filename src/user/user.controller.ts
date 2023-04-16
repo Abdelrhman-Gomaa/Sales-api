@@ -11,7 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ChangePasswordInput } from './input/change.password.input';
 import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
-import { User } from './model/user.model';
+import { User } from './models/user.model';
 import { UserService } from './user.service';
 
 @ApiTags('User')

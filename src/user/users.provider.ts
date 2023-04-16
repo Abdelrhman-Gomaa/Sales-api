@@ -1,5 +1,5 @@
 import { USERS_REPOSITORY } from 'src/database/database.model.patterns';
-import { User } from './model/user.model';
+import { User } from './models/user.model';
 
 export const UsersProvider = [
   {
