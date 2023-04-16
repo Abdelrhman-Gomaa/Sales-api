@@ -6,15 +6,15 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  
   const config = new DocumentBuilder()
     .setTitle('Sales Screen')
     .setDescription('This Api for Sales and get Invoice')
     .setVersion('1.0')
-    .addTag('Sales Screen')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('sales-api', app, document);
 
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
