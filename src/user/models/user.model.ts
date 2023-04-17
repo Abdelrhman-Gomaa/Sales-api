@@ -1,4 +1,4 @@
-import { Default, Column, DataType, Model, PrimaryKey, Table, Unique, Validate } from "sequelize-typescript";
+import { Default, Column, DataType, Model, PrimaryKey, Table, Unique, Validate, CreatedAt, UpdatedAt } from "sequelize-typescript";
 import * as bcrypt from 'bcrypt'
 import { ApiProperty } from '@nestjs/swagger';
 @Table
@@ -41,6 +41,14 @@ export class User extends Model {
     @ApiProperty()
     phoneNumber: string;
     
+    @CreatedAt
+    @Column({ type: DataType.DATE })
+    createdAt: Date;
+  
+    @UpdatedAt
+    @Column({ type: DataType.DATE })
+    updatedAt: Date;
+
     async validatePassword(password: string): Promise<boolean>{
         const hash = await bcrypt.hash(password, this.salt)
         return hash === this.password

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PrimaryKey, Default, DataType, Column, Model, Table } from 'sequelize-typescript';
+import { PrimaryKey, Default, DataType, Column, Model, Table, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
 @Table
 export class Product extends Model{
@@ -24,4 +24,12 @@ export class Product extends Model{
     @Column(DataType.INTEGER)
     @ApiProperty()
     price: number;
+
+    @CreatedAt
+    @Column({ type: DataType.DATE })
+    createdAt: Date;
+  
+    @UpdatedAt
+    @Column({ type: DataType.DATE })
+    updatedAt: Date;
 }
