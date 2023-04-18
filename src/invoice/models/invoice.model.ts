@@ -13,7 +13,7 @@ export class Invoice extends Model {
     id: string;
 
     @AllowNull(false)
-    @Column({ type: DataType.JSONB })
+    @Column({ type: DataType.JSON })
     @ApiProperty()
     ItemInfo: ItemInfoType[];
 

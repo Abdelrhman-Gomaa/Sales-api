@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import { Invoice } from 'src/invoice/models/invoice.model';
 import { Product } from 'src/product/models/product.model';
 import { User } from 'src/user/models/user.model';
 
@@ -17,7 +18,7 @@ export const databaseProviders = [
           timestamps: false
         },
       });
-      sequelize.addModels([User, Product]); //, Basket, Course, Subject
+      sequelize.addModels([User, Product, Invoice]);
 
       sequelize.authenticate()
         .then(() => {
@@ -27,12 +28,12 @@ export const databaseProviders = [
           console.error('Unable to connect to the database ❌❌❌❌❌❌❌❌❌', err);
         });
 
-      sequelize.sync({ alter: true, force: true })
-        .then(() => {
-          console.log(`Models and relation synchronization In DB Successfully ✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔`);
-        }).catch((err) => {
-          console.log(`Can't synchronization Models and relation In BD ❌❌❌❌❌❌❌❌❌ ${err.message}`);
-        });
+      // sequelize.sync({ alter: true, force: true })
+      //   .then(() => {
+      //     console.log(`Models and relation synchronization In DB Successfully ✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔`);
+      //   }).catch((err) => {
+      //     console.log(`Can't synchronization Models and relation In BD ❌❌❌❌❌❌❌❌❌ ${err.message}`);
+      //   });
 
 
       return sequelize;

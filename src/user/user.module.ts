@@ -10,7 +10,6 @@ import { UsersProvider } from './users.provider';
 
 @Module({
   imports: [
-    DatabaseModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET, //JwtConstants.secret

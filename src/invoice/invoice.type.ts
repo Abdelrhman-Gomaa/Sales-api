@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 
 export class ItemInfoType {
-
     @ApiProperty()
     productId: string;
 
@@ -14,4 +13,12 @@ export class ItemInfoType {
 
     @ApiProperty()
     totalUnitPrice: boolean;
+}
+
+export class ItemInfoInput {
+    @ApiProperty()
+    productId: string;
+
+    @ApiProperty()
+    quantity: number;
 }

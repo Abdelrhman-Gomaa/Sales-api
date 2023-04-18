@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { CreateInvoiceDto } from './input/create-invoice.dto';
-import { UpdateInvoiceDto } from './input/update-invoice.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateInvoiceInput } from './input/create-invoice.input';
+import { UpdateInvoiceInput } from './input/update-invoice.input';
+import { INVOICES_REPOSITORY, PRODUCTS_REPOSITORY } from 'src/database/database.model.patterns';
+import { Invoice } from './models/invoice.model';
+import { Product } from 'src/product/models/product.model';
 
 @Injectable()
 export class InvoiceService {
-  create(createInvoiceDto: CreateInvoiceDto) {
-    return 'This action adds a new invoice';
+  constructor(
+    @Inject(INVOICES_REPOSITORY)
+    private readonly invoiceRepo: typeof Invoice,
+    @Inject(PRODUCTS_REPOSITORY)
+    private readonly productRepo: typeof Product,
+  ) { }
+
+
+  async createInvoice(input: CreateInvoiceInput) {
+    let productIds = input.productInfo.map(product => product.productId);
+    const existingProducts = await this.productRepo.findAll({ where: { id: productIds } });
+    if (!existingProducts) throw new Error('Product not found');
+    let itemMapping = existingProducts.map(product => {
+      return input.productInfo.map(prod => {
+        if (product.id === prod.productId)
+          return {
+            productId: product.id,
+            title: product.title,
+            quantity: prod.quantity,
+            totalUnitPrice: (prod.quantity * product.price)
+          };
+      });
+    });
+    let itemInformation = [];
+    itemMapping.map(item => { return item.map(prod => prod != undefined ? itemInformation.push(prod) : 0); });
+    return await this.invoiceRepo.create({
+      ...input,
+      ItemInfo: itemInformation
+    });
   }
 
-  findAll() {
-    return `This action returns all invoice`;
+  async findAllInvoice() {
+    return await this.invoiceRepo.findAndCountAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} invoice`;
+  async findUserInvoices(userId: string) {
+    return await this.invoiceRepo.findAll({ where: { userId: userId } });
   }
 
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto) {
+  updateInvoice(id: string, input: UpdateInvoiceInput) {
     return `This action updates a #${id} invoice`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} invoice`;
+  async removeInvoice(id: string) {
+    return await this.invoiceRepo.destroy({ where: { id } });
   }
 }
