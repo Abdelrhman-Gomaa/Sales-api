@@ -7,7 +7,7 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordInput } from './input/change.password.input';
 import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
@@ -21,16 +21,19 @@ export class UserController {
         private readonly userService: UserService
     ) { }
 
+    @ApiOperation({ summary: "Find All User" })
     @Get()
     async findAll(): Promise<User[]> {
         return await this.userService.findAll();
     }
 
+    @ApiOperation({ summary: "Create A new User / Registration" })
     @Post('/register')
     async register(@Body(ValidationPipe) input: CreateUserInput) {
         return await this.userService.register(input);
     }
 
+    @ApiOperation({ summary: "Login to App" })
     @Post('/login')
     async login(@Body(ValidationPipe) input: LoginUserInput): Promise<{ accessToken: string; }> {
         return await this.userService.signIn(input);
