@@ -1,10 +1,9 @@
-import { PRODUCTS_REPOSITORY } from 'src/database/database.model.patterns';
+import { Repositories } from 'src/database/database.model.repositories';
 import { Product } from './models/product.model';
 
 export const ProductsProvider = [
-    {
-      provide: PRODUCTS_REPOSITORY,
-      useValue: Product,
-    }
-  ];
-  
+  {
+    provide: Repositories.ProductsRepository,
+    useValue: Product,
+  }
+];

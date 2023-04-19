@@ -1,9 +1,9 @@
-import { USERS_REPOSITORY } from 'src/database/database.model.patterns';
+import { Repositories } from 'src/database/database.model.repositories';
 import { User } from './models/user.model';
 
 export const UsersProvider = [
   {
-    provide: USERS_REPOSITORY,
+    provide: Repositories.UsersRepository,
     useValue: User,
   }
 ];

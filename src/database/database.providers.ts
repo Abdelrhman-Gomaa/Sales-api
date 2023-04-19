@@ -35,7 +35,6 @@ export const databaseProviders = [
       //     console.log(`Can't synchronization Models and relation In BD ❌❌❌❌❌❌❌❌❌ ${err.message}`);
       //   });
 
-
       return sequelize;
     },
   },
