@@ -18,9 +18,4 @@ export class CreateInvoiceInput {
     @IsEnum(InvoiceStatusEnum)
     @ApiProperty({ enum: InvoiceStatusEnum })
     status: InvoiceStatusEnum;
-
-    @IsNotEmpty()
-    @IsNumber()
-    @ApiProperty()
-    totalPrice: number;
 }

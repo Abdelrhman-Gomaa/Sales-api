@@ -14,7 +14,6 @@ export class InvoiceService {
     private readonly productRepo: typeof Product,
   ) { }
 
-
   async createInvoice(input: CreateInvoiceInput) {
     let productIds = input.productInfo.map(product => product.productId);
     const existingProducts = await this.productRepo.findAll({ where: { id: productIds } });
@@ -31,9 +30,12 @@ export class InvoiceService {
       });
     });
     let itemInformation = [];
-    itemMapping.map(item => { return item.map(prod => prod != undefined ? itemInformation.push(prod) : 0); });
+    itemMapping.map(item => item.map(prod => prod != undefined ? itemInformation.push(prod) : 0));
+    let totalPrice = 0;
+    itemInformation.forEach(item => totalPrice += item.totalUnitPrice);
     return await this.invoiceRepo.create({
       ...input,
+      totalPrice,
       ItemInfo: itemInformation
     });
   }
