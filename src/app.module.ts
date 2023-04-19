@@ -15,7 +15,7 @@ import { InvoiceModule } from './invoice/invoice.module';
     DatabaseModule,
     UserModule,
     ProductModule,
-    InvoiceModule
+    InvoiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
