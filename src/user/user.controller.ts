@@ -6,7 +6,7 @@ import {
     UseGuards,
     ValidationPipe
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordInput } from './input/change.password.input';
 import { CreateUserInput } from './input/create.user.input';

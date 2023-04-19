@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateProductInput } from './input/create-product.input';
 import { UpdateProductInput } from './input/update-product.input';
-import { PRODUCTS_REPOSITORY } from 'src/database/database.model.patterns';
+import { Repositories } from 'src/database/database.model.repositories';
 import { Product } from './models/product.model';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @Inject(PRODUCTS_REPOSITORY)
+    @Inject(Repositories.ProductsRepository)
     private readonly productRepo: typeof Product,
   ) { }
 

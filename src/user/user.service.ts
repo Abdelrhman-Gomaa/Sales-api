@@ -1,19 +1,17 @@
+import * as jwt from 'jsonwebtoken';
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
 import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
 import { User } from './models/user.model';
-import { JwtPayload } from './jwt.payload.interface';
-import { USERS_REPOSITORY } from 'src/database/database.model.patterns';
-
+import { Repositories } from 'src/database/database.model.repositories';
+import { TokenPayload } from 'src/auth/auth-token-payload.interface';
 @Injectable()
 export class UserService {
     constructor(
-        @Inject(USERS_REPOSITORY)
+        @Inject(Repositories.UsersRepository)
         private readonly userRepo: typeof User,
-        private readonly jwtService: JwtService
     ) { }
 
     async findAll() {
@@ -50,36 +48,14 @@ export class UserService {
 
     async signIn(input: LoginUserInput): Promise<{ accessToken: string; }> {
         const user = await this.validationUserPassword(input);
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', user);
         if (!user) {
             throw new UnauthorizedException('Invalid Credentials');
         }
-
-        const payload: JwtPayload = { userId: user.id };
-        const accessToken = await this.jwtService.sign(payload);
+        const payload: TokenPayload = { userId: user.id };
+        const accessToken = jwt.sign(payload, process.env.JWT_SECRET);
         return { accessToken };
     }
-
-    /*async changePass(changePasswordDto: ChangePasswordDto){
-        const user = await this.validationUserPassword(changePasswordDto)
-        
-        const salt = await bcrypt.genSalt()
-        const newpassword = changePasswordDto.newPassword
-        const hashPassword = await bcrypt.hash(newpassword, salt)
-        
-                    
-        //let newPass = await user.password
-        try{
-            user.password = hashPassword
-            //return newPass
-            return await this.userRepo.update({password: user.password},{where : {password : user.password}})
-        }catch(error){
-            return error.message
-            //  throw new UnauthorizedException('Invalid Password')
-            console.log(error.message)
-        }
-        //$2b$10$U06D9QeYFHYZmx8qeS/cQe2EGnQ8dhz6t/LS7boF0ZsF4cLHmaLNK
-        
-    }*/
 
     async validationUserPassword(input: LoginUserInput) {
         const user = await this.userRepo.findOne({ where: { email: input.email } });
@@ -98,6 +74,12 @@ export class UserService {
         } else {
             return null;
         }
+    }
+
+    async getUser(userId: string) {
+        const user = await this.userRepo.findOne({ where: { id: userId } });
+        if (!user) throw new UnauthorizedException('Invalid User');
+        return user;
     }
 
 }
