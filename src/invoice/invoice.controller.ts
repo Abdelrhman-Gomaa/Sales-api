@@ -1,19 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceInput } from './input/create-invoice.input';
 import { UpdateInvoiceInput } from './input/update-invoice.input';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/auth/auth-user.decorator';
 @ApiTags('Invoice')
 @Controller('invoice')
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) { }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Create New Invoice" })
   @Post()
-  createInvoice(@Body() input: CreateInvoiceInput) {
-    return this.invoiceService.createInvoice(input);
+  createInvoice(@CurrentUser() currentUser: string, @Body() input: CreateInvoiceInput) {
+    return this.invoiceService.createInvoice(currentUser, input);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: "Get All Invoice" })
   @Get()
   findAllInvoice() {

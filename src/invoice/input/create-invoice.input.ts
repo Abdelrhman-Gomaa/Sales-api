@@ -10,11 +10,6 @@ export class CreateInvoiceInput {
     productInfo: ItemInfoInput[];
 
     @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    userId: string;
-
-    @IsNotEmpty()
     @IsEnum(InvoiceStatusEnum)
     @ApiProperty({ enum: InvoiceStatusEnum })
     status: InvoiceStatusEnum;

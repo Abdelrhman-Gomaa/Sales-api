@@ -1,20 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateInvoiceInput } from './input/create-invoice.input';
 import { UpdateInvoiceInput } from './input/update-invoice.input';
-import { INVOICES_REPOSITORY, PRODUCTS_REPOSITORY } from 'src/database/database.model.patterns';
+import { Repositories } from 'src/database/database.model.repositories';
 import { Invoice } from './models/invoice.model';
 import { Product } from 'src/product/models/product.model';
 
 @Injectable()
 export class InvoiceService {
   constructor(
-    @Inject(INVOICES_REPOSITORY)
+    @Inject(Repositories.InvoicesRepository)
     private readonly invoiceRepo: typeof Invoice,
-    @Inject(PRODUCTS_REPOSITORY)
+    @Inject(Repositories.ProductsRepository)
     private readonly productRepo: typeof Product,
   ) { }
 
-  async createInvoice(input: CreateInvoiceInput) {
+  async createInvoice(currentUser: string, input: CreateInvoiceInput) {
     let productIds = input.productInfo.map(product => product.productId);
     const existingProducts = await this.productRepo.findAll({ where: { id: productIds } });
     if (!existingProducts) throw new Error('Product not found');
@@ -35,6 +35,7 @@ export class InvoiceService {
     itemInformation.forEach(item => totalPrice += item.totalUnitPrice);
     return await this.invoiceRepo.create({
       ...input,
+      userId: currentUser,
       totalPrice,
       ItemInfo: itemInformation
     });
