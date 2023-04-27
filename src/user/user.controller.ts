@@ -3,6 +3,7 @@ import {
     Controller,
     Get,
     Post,
+    Put,
     UseGuards,
     ValidationPipe
 } from '@nestjs/common';
@@ -45,6 +46,11 @@ export class UserController {
     async login(@Body(ValidationPipe) input: LoginUserInput): Promise<{ accessToken: string; }> {
         return await this.userService.signIn(input);
     }
-    //@Patch()
+
+    @ApiOperation({ summary: "Login with Phone Number to App" })
+    @Put('/changePassword')
+    async changePassword(@CurrentUser() userId: string, @Body(ValidationPipe) input: ChangePasswordInput) {
+        return await this.userService.changePassword(userId, input);
+    }
     //@Delete()
 }

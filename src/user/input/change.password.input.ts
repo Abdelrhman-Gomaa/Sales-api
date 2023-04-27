@@ -1,21 +1,36 @@
-import { IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 
 export class ChangePasswordInput {
 
+    @ApiProperty()
     @IsString()
-    readonly email: string;
-    
-    @IsString()
-    readonly password: string;
+    @IsNotEmpty()
+    @MaxLength(30)
+    @MinLength(6)
+    oldPassword: string;
 
+    @ApiProperty()
     @IsString()
-    @MinLength(8)
-    @MaxLength(20)
+    @IsNotEmpty()
+    @MaxLength(30)
+    @MinLength(6)
     @Matches(
         /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-        { message: 'Password too week'}
-    ) //uppercase , lowercase , number or spezial character
-    readonly newPassword: string;
+        { message: 'Password too week' }
+    )
+    newPassword: string;
+
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(30)
+    @MinLength(6)
+    @Matches(
+        /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        { message: 'Password too week' }
+    )
+    confirmPassword: string;
 
 }
