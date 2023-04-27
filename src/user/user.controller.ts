@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    Patch,
     Post,
     Put,
     UseGuards,
@@ -48,7 +49,7 @@ export class UserController {
     }
 
     @ApiOperation({ summary: "Login with Phone Number to App" })
-    @Put('/changePassword')
+    @Patch('/changePassword')
     async changePassword(@CurrentUser() userId: string, @Body(ValidationPipe) input: ChangePasswordInput) {
         return await this.userService.changePassword(userId, input);
     }
