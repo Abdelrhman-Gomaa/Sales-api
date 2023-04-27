@@ -13,6 +13,7 @@ import { CreateUserInput } from './input/create.user.input';
 import { LoginUserInput } from './input/login.user.input';
 import { User } from './models/user.model';
 import { UserService } from './user.service';
+import { CurrentUser } from 'src/auth/auth-user.decorator';
 
 @ApiTags('User')
 @Controller('user')
@@ -25,6 +26,12 @@ export class UserController {
     @Get()
     async findAll(): Promise<User[]> {
         return await this.userService.findAll();
+    }
+
+    @ApiOperation({ summary: "Find Current User Data" })
+    @Get('/me')
+    async me(@CurrentUser() currentUser: string): Promise<User> {
+        return await this.userService.me(currentUser);
     }
 
     @ApiOperation({ summary: "Create A new User / Registration" })

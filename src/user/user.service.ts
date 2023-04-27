@@ -18,6 +18,10 @@ export class UserService {
         return await this.userRepo.findAll({ include: { all: true } });
     }
 
+    async me(userId) {
+        return await this.userRepo.findOne({ where: { id: userId } });
+    }
+
     async register(input: CreateUserInput) {
         const existUser = await this.userRepo.findOne({
             where: {
